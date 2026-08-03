@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Artex Production</title>
+    <script>
+      // GitHub Pages SPA redirect trick
+      // When GitHub Pages serves a 404 for /artex/ar or /artex/en,
+      // this script encodes the path and redirects to index.html
+      // which React Router then decodes and navigates to.
+      var segmentCount = 1; // = number of path segments in the repo base (/artex = 1)
+      var l = window.location;
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        l.pathname.split('/').slice(0, 1 + segmentCount).join('/') + '/?p=/' +
+        l.pathname.slice(1).split('/').slice(segmentCount).join('/').replace(/&/g, '~and~') +
+        (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+        l.hash
+      );
+    </script>
+  </head>
+  <body></body>
+</html>
