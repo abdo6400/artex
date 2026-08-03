@@ -38,13 +38,13 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, onToggleLang, onNavigate }
         {/* Logo */}
         <button onClick={() => handleScrollTo('hero')} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', gap: 12 }}>
           <img
-            src="/logo.svg"
+            src={`${import.meta.env.BASE_URL}logo.svg`}
             alt="Artex Production Logo"
             className="logo-img"
             style={{ height: 38, width: 'auto' }}
           />
           <div style={{ textAlign: lang === 'ar' ? 'right' : 'left' }}>
-            <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#f1f5f9', lineHeight: 1 }}>
+            <div dir="ltr" style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#f1f5f9', lineHeight: 1 }}>
               ARTEX<span style={{ color: '#d4a84b' }}>.</span>
             </div>
             <div style={{ fontSize: '0.58rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#64748b', marginTop: 2, fontFamily: lang === 'ar' ? 'var(--font-arabic)' : 'var(--font-sans)' }}>

@@ -37,9 +37,9 @@ export const Footer: React.FC<FooterProps> = ({ lang }) => {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 24, marginBottom: 32, paddingBottom: 32, borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
             {/* Logo & tagline */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-              <img src="/logo.svg" alt="Artex Production Logo" className="logo-img" style={{ height: 44, width: 'auto' }} />
+              <img src={`${import.meta.env.BASE_URL}logo.svg`} alt="Artex Production Logo" className="logo-img" style={{ height: 44, width: 'auto' }} />
               <div>
-                <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', fontWeight: 800, letterSpacing: '0.12em', color: '#f1f5f9' }}>
+                <div dir="ltr" style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', fontWeight: 800, letterSpacing: '0.12em', color: '#f1f5f9' }}>
                   ARTEX<span style={{ color: '#d4a84b' }}>.</span>
                 </div>
                 <div style={{ fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#64748b', marginTop: 2 }}>
