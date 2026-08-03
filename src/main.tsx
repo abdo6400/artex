@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import './index.css'
 
-// Strip trailing slash — BrowserRouter basename must not end with /
+// Strip trailing slash — BrowserRouter basename must not end with //
 const basename = import.meta.env.BASE_URL.replace(/\/$/, '') || '/'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
