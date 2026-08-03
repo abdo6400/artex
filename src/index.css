@@ -4,17 +4,17 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-navy-950: #060f1c;
-  --color-navy-900: #0B192C;
-  --color-navy-800: #0f2240;
-  --color-navy-700: #1E3E62;
-  --color-navy-600: #2a5080;
+  --color-navy-950: #0D1C22;
+  --color-navy-900: #12242B;
+  --color-navy-800: #192C33;
+  --color-navy-700: #25373E;
+  --color-navy-600: #354A53;
   --color-gold-400: #d4a84b;
   --color-gold-300: #e8c166;
   --color-gold-200: #f0d48a;
   --color-cyan-400: #22d3ee;
   --color-cyan-300: #67e8f9;
-  --color-charcoal: #1a2535;
+  --color-charcoal: #16272E;
 
   --font-sans: 'Plus Jakarta Sans', sans-serif;
   --font-arabic: 'Cairo', sans-serif;
@@ -22,18 +22,18 @@
 }
 
 :root {
-  --background: #0B192C;
+  --background: #12242B;
   --foreground: #f1f5f9;
-  --card: #0f2240;
+  --card: #192C33;
   --card-foreground: #e2e8f0;
   --primary: #d4a84b;
-  --primary-foreground: #0B192C;
-  --secondary: #1E3E62;
+  --primary-foreground: #12242B;
+  --secondary: #25373E;
   --secondary-foreground: #f1f5f9;
-  --muted: #1a2535;
+  --muted: #16272E;
   --muted-foreground: #94a3b8;
   --accent: #22d3ee;
-  --accent-foreground: #0B192C;
+  --accent-foreground: #12242B;
   --border: rgba(255,255,255,0.08);
   --ring: #d4a84b;
   --radius: 4px;
@@ -188,7 +188,7 @@ body {
 
 /* ── Glass card ── */
 .glass-card {
-  background: rgba(11, 25, 44, 0.6);
+  background: rgba(18, 36, 43, 0.65);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255,255,255,0.08);
@@ -245,7 +245,7 @@ body {
 /* ── CTA Buttons ── */
 .btn-primary {
   background: linear-gradient(135deg, #d4a84b, #e8c166);
-  color: #0B192C;
+  color: #12242B;
   font-weight: 700;
   transition: all 0.3s ease;
   position: relative;
@@ -295,7 +295,7 @@ body {
   box-shadow: 0 0 0 3px rgba(212,168,75,0.12);
 }
 .form-input::placeholder { color: rgba(148,163,184,0.5); }
-select.form-input option { background: #0f2240; }
+select.form-input option { background: #192C33; }
 
 /* ── Floating label wrapper ── */
 .float-label-wrapper { position: relative; }
@@ -315,7 +315,7 @@ select.form-input option { background: #0f2240; }
   left: 12px;
   font-size: 0.7rem;
   color: #d4a84b;
-  background: #0b192c;
+  background: #12242B;
   padding: 0 4px;
 }
 
@@ -323,7 +323,7 @@ select.form-input option { background: #0f2240; }
 .lightbox-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(6,15,28,0.96);
+  background: rgba(13,28,34,0.96);
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -339,7 +339,7 @@ select.form-input option { background: #0f2240; }
   width: 44px;
   height: 44px;
   background: linear-gradient(135deg, #d4a84b, #e8c166);
-  color: #0b192c;
+  color: #12242B;
   border: none;
   border-radius: 50%;
   cursor: pointer;

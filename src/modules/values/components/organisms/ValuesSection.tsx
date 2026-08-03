@@ -11,7 +11,7 @@ export const ValuesSection: React.FC<ValuesSectionProps> = ({ lang }) => {
   const copy = t[lang];
 
   return (
-    <section id="values" style={{ padding: 'clamp(64px, 8vw, 120px) 24px', background: '#080f1c' }}>
+    <section id="values" style={{ padding: 'clamp(64px, 8vw, 120px) 24px', background: '#12242B' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto' }}>
         <div style={{ marginBottom: 56 }}>
           <div className="section-label" style={{ marginBottom: 16 }}>{copy.values.label}</div>

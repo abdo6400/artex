@@ -13,7 +13,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ lang }) => {
   useScrollReveal();
 
   return (
-    <section id="about" style={{ padding: 'clamp(64px, 8vw, 120px) 24px', background: '#080f1c', position: 'relative', overflow: 'hidden' }}>
+    <section id="about" style={{ padding: 'clamp(64px, 8vw, 120px) 24px', background: '#0D1C22', position: 'relative', overflow: 'hidden' }}>
       {/* Section watermark */}
       <div style={{
         position: 'absolute', top: '50%', left: lang === 'ar' ? 'auto' : '-0.1em', right: lang === 'ar' ? '-0.1em' : 'auto',

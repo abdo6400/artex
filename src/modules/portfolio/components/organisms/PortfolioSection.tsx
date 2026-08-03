@@ -21,7 +21,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ lang }) => {
   } = usePortfolioFilter();
 
   return (
-    <section id="portfolio" style={{ padding: 'clamp(64px, 8vw, 120px) 24px', background: '#060f1c' }}>
+    <section id="portfolio" style={{ padding: 'clamp(64px, 8vw, 120px) 24px', background: '#0D1C22' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 24, marginBottom: 48 }}>
           <div>

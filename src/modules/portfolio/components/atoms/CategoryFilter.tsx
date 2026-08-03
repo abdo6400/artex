@@ -12,7 +12,7 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({ label, isActive,
     style={{
       padding: '8px 20px',
       background: isActive ? '#d4a84b' : 'rgba(255,255,255,0.04)',
-      color: isActive ? '#0b192c' : '#94a3b8',
+      color: isActive ? '#12242B' : '#94a3b8',
       border: isActive ? '1px solid #d4a84b' : '1px solid rgba(255,255,255,0.08)',
       cursor: 'pointer',
       fontSize: '0.8rem',

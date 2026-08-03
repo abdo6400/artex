@@ -12,7 +12,7 @@ export const ClientsSection: React.FC<ClientsSectionProps> = ({ lang }) => {
   const doubled = [...clientsData, ...clientsData];
 
   return (
-    <section style={{ padding: '64px 0', background: '#080f1c', borderTop: '1px solid rgba(255,255,255,0.04)', borderBottom: '1px solid rgba(255,255,255,0.04)', overflow: 'hidden' }}>
+    <section style={{ padding: '64px 0', background: '#0D1C22', borderTop: '1px solid rgba(255,255,255,0.04)', borderBottom: '1px solid rgba(255,255,255,0.04)', overflow: 'hidden' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px', marginBottom: 40 }}>
         <div style={{ textAlign: 'center' }}>
           <div className="section-label" style={{ marginBottom: 8 }}>{copy.clients.label}</div>

@@ -88,7 +88,7 @@ export const Lightbox: React.FC<LightboxProps> = ({ item, onClose }) => {
           style={{
             position: 'absolute', left: -56, top: '50%', transform: 'translateY(-50%)',
             width: 44, height: 44, borderRadius: '50%',
-            background: 'rgba(11,25,44,0.8)', border: '1px solid rgba(212,168,75,0.3)',
+            background: 'rgba(18,36,43,0.85)', border: '1px solid rgba(212,168,75,0.3)',
             color: '#d4a84b', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
             transition: 'all 0.2s',
           }}
@@ -105,7 +105,7 @@ export const Lightbox: React.FC<LightboxProps> = ({ item, onClose }) => {
           style={{
             position: 'absolute', right: -56, top: '50%', transform: 'translateY(-50%)',
             width: 44, height: 44, borderRadius: '50%',
-            background: 'rgba(11,25,44,0.8)', border: '1px solid rgba(212,168,75,0.3)',
+            background: 'rgba(18,36,43,0.85)', border: '1px solid rgba(212,168,75,0.3)',
             color: '#d4a84b', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
             transition: 'all 0.2s',
           }}

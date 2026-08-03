@@ -12,7 +12,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ lang, onNavigate }) =>
   const copy = t[lang];
 
   return (
-    <section id="home" style={{ minHeight: '100vh', position: 'relative', display: 'flex', alignItems: 'center', overflow: 'hidden', background: '#060f1c' }}>
+    <section id="home" style={{ minHeight: '100vh', position: 'relative', display: 'flex', alignItems: 'center', overflow: 'hidden', background: '#12242B' }}>
       {/* Background image with Ken Burns */}
       <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
         <img
@@ -21,7 +21,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ lang, onNavigate }) =>
           className="animate-kenburns"
           style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.22 }}
         />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(6,15,28,0.97) 0%, rgba(11,25,44,0.82) 50%, rgba(30,62,98,0.72) 100%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(13,28,34,0.97) 0%, rgba(18,36,43,0.85) 50%, rgba(37,55,62,0.72) 100%)' }} />
       </div>
 
       {/* Grid lines */}

@@ -28,7 +28,7 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, onToggleLang, onNavigate }
     <nav
       style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-        background: scrolled ? 'rgba(11,25,44,0.97)' : 'transparent',
+        background: scrolled ? 'rgba(18,36,43,0.97)' : 'transparent',
         backdropFilter: scrolled ? 'blur(14px)' : 'none',
         borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : 'none',
         transition: 'all 0.3s ease',
@@ -102,7 +102,7 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, onToggleLang, onNavigate }
 
       {/* Mobile Menu */}
       <div style={{
-        background: 'rgba(11,25,44,0.99)',
+        background: 'rgba(18,36,43,0.99)',
         borderTop: menuOpen ? '1px solid rgba(255,255,255,0.06)' : 'none',
         padding: menuOpen ? '16px 24px 24px' : '0 24px',
         maxHeight: menuOpen ? '400px' : '0',

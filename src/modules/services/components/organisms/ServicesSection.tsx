@@ -13,7 +13,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ lang }) => {
   useScrollReveal();
 
   return (
-    <section id="services" style={{ padding: 'clamp(64px, 8vw, 120px) 24px', background: '#060d19', position: 'relative', overflow: 'hidden' }}>
+    <section id="services" style={{ padding: 'clamp(64px, 8vw, 120px) 24px', background: '#12242B', position: 'relative', overflow: 'hidden' }}>
       <div style={{
         position: 'absolute', top: '50%', right: lang === 'ar' ? 'auto' : '-0.05em', left: lang === 'ar' ? '-0.05em' : 'auto',
         transform: 'translateY(-50%)',

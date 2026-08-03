@@ -18,7 +18,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ index, title, desc }) 
       className="reveal"
       style={{
         padding: '36px 32px',
-        background: hovered ? 'rgba(30,62,98,0.25)' : 'rgba(11,25,44,0.6)',
+        background: hovered ? 'rgba(37,55,62,0.35)' : 'rgba(18,36,43,0.65)',
         border: `1px solid ${hovered ? 'rgba(212,168,75,0.3)' : 'rgba(255,255,255,0.06)'}`,
         position: 'relative',
         overflow: 'hidden',

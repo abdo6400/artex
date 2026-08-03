@@ -14,7 +14,7 @@ export const PortfolioCard: React.FC<PortfolioCardProps> = ({ item, categoryName
     style={{
       position: 'relative', overflow: 'hidden',
       aspectRatio: '4/3', cursor: 'pointer',
-      background: '#0b192c',
+      background: '#192C33',
       border: '1px solid rgba(255,255,255,0.06)',
       borderRadius: 2,
     }}
@@ -42,7 +42,7 @@ export const PortfolioCard: React.FC<PortfolioCardProps> = ({ item, categoryName
     {/* Gradient overlay */}
     <div style={{
       position: 'absolute', inset: 0,
-      background: 'linear-gradient(to top, rgba(6,15,28,0.97) 0%, rgba(6,15,28,0.3) 50%, transparent 100%)',
+      background: 'linear-gradient(to top, rgba(13,28,34,0.97) 0%, rgba(13,28,34,0.3) 50%, transparent 100%)',
     }} />
 
     {/* Client name slides up from bottom */}
