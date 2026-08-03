@@ -3,13 +3,11 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import path from 'node:path'
 
-// /artex/ when running in GitHub Actions, / for local dev
-const base = process.env.GITHUB_ACTIONS ? '/artex/' : '/'
-
 // Standard clean Vite configuration
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   appType: 'spa',
-  base,
+  // Always use /artex/ base during production build for GitHub Pages
+  base: command === 'build' ? '/artex/' : '/',
 
   plugins: [
     react(),
@@ -29,4 +27,4 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 5173,
   },
-})
+}))
