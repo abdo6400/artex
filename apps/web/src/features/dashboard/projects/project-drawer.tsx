@@ -44,13 +44,8 @@ export function ProjectDrawer({
   if (!isOpen) return null;
 
   return (
-    <div className="drawer-backdrop" onClick={onClose}>
-      <aside
-        className="drawer-panel"
-        onClick={(e) => e.stopPropagation()}
-        role="dialog"
-        aria-modal="true"
-      >
+    <div className="drawer-backdrop">
+      <aside className="drawer-panel" role="dialog" aria-modal="true">
         <DrawerInner
           key={projectId || (initialValues ? "initial" : "new")}
           projectId={projectId}
