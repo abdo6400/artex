@@ -199,8 +199,9 @@ export const siteCopySchema = z.object({
           videoUrl: mediaUrl,
         }),
       )
-      .min(1)
-      .max(12),
+      .min(0)
+      .max(12)
+      .default([]),
   }),
   values: z.object({ label: text, heading: text, items }),
   portfolio: z.object({

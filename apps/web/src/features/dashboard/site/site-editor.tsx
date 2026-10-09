@@ -809,7 +809,9 @@ export function SiteEditor({
                 disabled={content.ar.showreel.items.length >= 12}
                 onClick={() =>
                   updateContent((prev) => {
-                    const fallback = prev.en.showreel.items[0]!.thumbnailUrl;
+                    const fallback =
+                      prev.en.showreel.items[0]?.thumbnailUrl ||
+                      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&h=800&fit=crop&auto=format";
                     return {
                       ...prev,
                       ar: {
@@ -954,202 +956,228 @@ export function SiteEditor({
             </div>
 
             <div className="repeatable-items-list">
-              {content.ar.showreel.items.map((arItem, idx) => {
-                const enItem = content.en.showreel.items[idx]!;
-                return (
-                  <div className="repeatable-item-card" key={idx}>
-                    <div className="item-card-header">
-                      <span className="item-index-pill">
-                        {String(idx + 1).padStart(2, "0")}
-                      </span>
-                      <strong className="item-summary-title">
-                        {arItem.title || enItem.title}
-                      </strong>
-                      <button
-                        type="button"
-                        className="icon-button danger-btn"
-                        disabled={content.ar.showreel.items.length <= 1}
-                        title={copy.common.delete}
-                        onClick={() =>
-                          updateContent((prev) => ({
-                            ...prev,
-                            ar: {
-                              ...prev.ar,
-                              showreel: {
-                                ...prev.ar.showreel,
-                                items: prev.ar.showreel.items.filter(
-                                  (_, itemIndex) => itemIndex !== idx,
-                                ),
+              {content.ar.showreel.items.length === 0 ? (
+                <div
+                  style={{
+                    padding: "2.5rem 1.5rem",
+                    textAlign: "center",
+                    border:
+                      "1px dashed var(--dash-border, rgba(255,255,255,0.15))",
+                    borderRadius: "12px",
+                    color: "var(--dash-muted, #94a3b8)",
+                    fontSize: "0.9rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                  }}
+                >
+                  <Icon name="image" size={28} />
+                  <p style={{ fontWeight: 600 }}>
+                    لا توجد عناصر شو ريل حالياً / No showreel items yet
+                  </p>
+                  <p style={{ fontSize: "0.8rem", opacity: 0.8 }}>
+                    انقر على &quot;إضافة عرض / Add preview&quot; لإضافة عنصر
+                    جديد، أو اتركها فارغة لإخفاء القسم في الموقع تلقائياً.
+                  </p>
+                </div>
+              ) : (
+                content.ar.showreel.items.map((arItem, idx) => {
+                  const enItem = content.en.showreel.items[idx]!;
+                  return (
+                    <div className="repeatable-item-card" key={idx}>
+                      <div className="item-card-header">
+                        <span className="item-index-pill">
+                          {String(idx + 1).padStart(2, "0")}
+                        </span>
+                        <strong className="item-summary-title">
+                          {arItem.title || enItem.title}
+                        </strong>
+                        <button
+                          type="button"
+                          className="icon-button danger-btn"
+                          title={copy.common.delete}
+                          onClick={() =>
+                            updateContent((prev) => ({
+                              ...prev,
+                              ar: {
+                                ...prev.ar,
+                                showreel: {
+                                  ...prev.ar.showreel,
+                                  items: prev.ar.showreel.items.filter(
+                                    (_, itemIndex) => itemIndex !== idx,
+                                  ),
+                                },
                               },
-                            },
-                            en: {
-                              ...prev.en,
-                              showreel: {
-                                ...prev.en.showreel,
-                                items: prev.en.showreel.items.filter(
-                                  (_, itemIndex) => itemIndex !== idx,
-                                ),
+                              en: {
+                                ...prev.en,
+                                showreel: {
+                                  ...prev.en.showreel,
+                                  items: prev.en.showreel.items.filter(
+                                    (_, itemIndex) => itemIndex !== idx,
+                                  ),
+                                },
                               },
-                            },
-                          }))
-                        }
-                      >
-                        <Icon name="trash" size={14} />
-                      </button>
-                    </div>
+                            }))
+                          }
+                        >
+                          <Icon name="trash" size={14} />
+                        </button>
+                      </div>
 
-                    <div className="grid-2-col item-card-body">
-                      <div dir="rtl">
+                      <div className="grid-2-col item-card-body">
+                        <div dir="rtl">
+                          <label>
+                            <span>العنوان (AR)</span>
+                            <input
+                              value={arItem.title}
+                              onChange={(event) =>
+                                updateContent((prev) => {
+                                  const items = [...prev.ar.showreel.items];
+                                  items[idx] = {
+                                    ...items[idx]!,
+                                    title: event.target.value,
+                                  };
+                                  return {
+                                    ...prev,
+                                    ar: {
+                                      ...prev.ar,
+                                      showreel: {
+                                        ...prev.ar.showreel,
+                                        items,
+                                      },
+                                    },
+                                  };
+                                })
+                              }
+                            />
+                          </label>
+                          <label>
+                            <span>الوصف (AR)</span>
+                            <textarea
+                              rows={3}
+                              value={arItem.desc}
+                              onChange={(event) =>
+                                updateContent((prev) => {
+                                  const items = [...prev.ar.showreel.items];
+                                  items[idx] = {
+                                    ...items[idx]!,
+                                    desc: event.target.value,
+                                  };
+                                  return {
+                                    ...prev,
+                                    ar: {
+                                      ...prev.ar,
+                                      showreel: {
+                                        ...prev.ar.showreel,
+                                        items,
+                                      },
+                                    },
+                                  };
+                                })
+                              }
+                            />
+                          </label>
+                        </div>
+
+                        <div dir="ltr">
+                          <label>
+                            <span>Title (EN)</span>
+                            <input
+                              value={enItem.title}
+                              onChange={(event) =>
+                                updateContent((prev) => {
+                                  const items = [...prev.en.showreel.items];
+                                  items[idx] = {
+                                    ...items[idx]!,
+                                    title: event.target.value,
+                                  };
+                                  return {
+                                    ...prev,
+                                    en: {
+                                      ...prev.en,
+                                      showreel: {
+                                        ...prev.en.showreel,
+                                        items,
+                                      },
+                                    },
+                                  };
+                                })
+                              }
+                            />
+                          </label>
+                          <label>
+                            <span>Description (EN)</span>
+                            <textarea
+                              rows={3}
+                              value={enItem.desc}
+                              onChange={(event) =>
+                                updateContent((prev) => {
+                                  const items = [...prev.en.showreel.items];
+                                  items[idx] = {
+                                    ...items[idx]!,
+                                    desc: event.target.value,
+                                  };
+                                  return {
+                                    ...prev,
+                                    en: {
+                                      ...prev.en,
+                                      showreel: {
+                                        ...prev.en.showreel,
+                                        items,
+                                      },
+                                    },
+                                  };
+                                })
+                              }
+                            />
+                          </label>
+                        </div>
+                      </div>
+
+                      <div className="showreel-media-fields">
+                        <div>
+                          <label>
+                            <span>صورة المعاينة / Thumbnail</span>
+                          </label>
+                          <Dropzone
+                            compact
+                            allowUrl
+                            value={arItem.thumbnailUrl}
+                            alt={{ ar: arItem.title, en: enItem.title }}
+                            onUploaded={(url) =>
+                              updateShowreelMedia(idx, "thumbnailUrl", url)
+                            }
+                            onUrlChange={(url) =>
+                              updateShowreelMedia(idx, "thumbnailUrl", url)
+                            }
+                          />
+                        </div>
                         <label>
-                          <span>العنوان (AR)</span>
+                          <span>رابط الفيديو / Video URL</span>
                           <input
-                            value={arItem.title}
+                            dir="ltr"
+                            type="url"
+                            placeholder="https://youtube.com/watch?v=..."
+                            value={arItem.videoUrl}
                             onChange={(event) =>
-                              updateContent((prev) => {
-                                const items = [...prev.ar.showreel.items];
-                                items[idx] = {
-                                  ...items[idx]!,
-                                  title: event.target.value,
-                                };
-                                return {
-                                  ...prev,
-                                  ar: {
-                                    ...prev.ar,
-                                    showreel: {
-                                      ...prev.ar.showreel,
-                                      items,
-                                    },
-                                  },
-                                };
-                              })
+                              updateShowreelMedia(
+                                idx,
+                                "videoUrl",
+                                event.target.value,
+                              )
                             }
                           />
-                        </label>
-                        <label>
-                          <span>الوصف (AR)</span>
-                          <textarea
-                            rows={3}
-                            value={arItem.desc}
-                            onChange={(event) =>
-                              updateContent((prev) => {
-                                const items = [...prev.ar.showreel.items];
-                                items[idx] = {
-                                  ...items[idx]!,
-                                  desc: event.target.value,
-                                };
-                                return {
-                                  ...prev,
-                                  ar: {
-                                    ...prev.ar,
-                                    showreel: {
-                                      ...prev.ar.showreel,
-                                      items,
-                                    },
-                                  },
-                                };
-                              })
-                            }
-                          />
-                        </label>
-                      </div>
-
-                      <div dir="ltr">
-                        <label>
-                          <span>Title (EN)</span>
-                          <input
-                            value={enItem.title}
-                            onChange={(event) =>
-                              updateContent((prev) => {
-                                const items = [...prev.en.showreel.items];
-                                items[idx] = {
-                                  ...items[idx]!,
-                                  title: event.target.value,
-                                };
-                                return {
-                                  ...prev,
-                                  en: {
-                                    ...prev.en,
-                                    showreel: {
-                                      ...prev.en.showreel,
-                                      items,
-                                    },
-                                  },
-                                };
-                              })
-                            }
-                          />
-                        </label>
-                        <label>
-                          <span>Description (EN)</span>
-                          <textarea
-                            rows={3}
-                            value={enItem.desc}
-                            onChange={(event) =>
-                              updateContent((prev) => {
-                                const items = [...prev.en.showreel.items];
-                                items[idx] = {
-                                  ...items[idx]!,
-                                  desc: event.target.value,
-                                };
-                                return {
-                                  ...prev,
-                                  en: {
-                                    ...prev.en,
-                                    showreel: {
-                                      ...prev.en.showreel,
-                                      items,
-                                    },
-                                  },
-                                };
-                              })
-                            }
-                          />
+                          <small>
+                            YouTube or a direct MP4/WebM link. Leave empty for
+                            an image preview.
+                          </small>
                         </label>
                       </div>
                     </div>
-
-                    <div className="showreel-media-fields">
-                      <div>
-                        <label>
-                          <span>صورة المعاينة / Thumbnail</span>
-                        </label>
-                        <Dropzone
-                          compact
-                          allowUrl
-                          value={arItem.thumbnailUrl}
-                          alt={{ ar: arItem.title, en: enItem.title }}
-                          onUploaded={(url) =>
-                            updateShowreelMedia(idx, "thumbnailUrl", url)
-                          }
-                          onUrlChange={(url) =>
-                            updateShowreelMedia(idx, "thumbnailUrl", url)
-                          }
-                        />
-                      </div>
-                      <label>
-                        <span>رابط الفيديو / Video URL</span>
-                        <input
-                          dir="ltr"
-                          type="url"
-                          placeholder="https://youtube.com/watch?v=..."
-                          value={arItem.videoUrl}
-                          onChange={(event) =>
-                            updateShowreelMedia(
-                              idx,
-                              "videoUrl",
-                              event.target.value,
-                            )
-                          }
-                        />
-                        <small>
-                          YouTube or a direct MP4/WebM link. Leave empty for an
-                          image preview.
-                        </small>
-                      </label>
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })
+              )}
             </div>
           </section>
         )}

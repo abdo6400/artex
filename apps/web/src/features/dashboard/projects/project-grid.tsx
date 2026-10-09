@@ -212,7 +212,9 @@ export function ProjectGrid({
                     <strong className="client-title">
                       {project.clientName}
                     </strong>
-                    <code className="slug-code">/{project.slug}</code>
+                    <code className="slug-code" dir="ltr">
+                      /{project.slug}
+                    </code>
                   </div>
                   <h4 className="project-title">
                     {project.title || project.slug}

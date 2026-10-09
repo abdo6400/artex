@@ -25,7 +25,12 @@ function youtubeEmbedUrl(value: string) {
 export function ShowreelSection({ lang }: { lang: Lang }) {
   const copy = useSiteCopy(lang);
   const [selected, setSelected] = useState<ShowreelItem | null>(null);
-  const carouselItems = [...copy.showreel.items, ...copy.showreel.items];
+
+  const rawItems = copy.showreel.items || [];
+  if (rawItems.length === 0) return null;
+
+  const isLooping = rawItems.length > 1;
+  const carouselItems = isLooping ? [...rawItems, ...rawItems] : rawItems;
 
   useEffect(() => {
     if (!selected) return;
@@ -50,7 +55,14 @@ export function ShowreelSection({ lang }: { lang: Lang }) {
       </div>
 
       <div className="showreel-carousel" aria-label={copy.showreel.heading}>
-        <div className="showreel-track">
+        <div
+          className="showreel-track"
+          style={
+            !isLooping
+              ? { animation: "none", justifyContent: "center", width: "100%" }
+              : undefined
+          }
+        >
           {carouselItems.map((item, index) => (
             <article className="showreel-card" key={`${item.title}-${index}`}>
               <Image

@@ -59,6 +59,7 @@ export function QuickAddModal({
   const [coverUrl, setCoverUrl] = useState("");
   const [titleEn, setTitleEn] = useState("");
   const [summaryAr, setSummaryAr] = useState("");
+  const [summaryEn, setSummaryEn] = useState("");
   const [slugOverride, setSlugOverride] = useState("");
   const [publishImmediately, setPublishImmediately] = useState(true);
 
@@ -92,7 +93,8 @@ export function QuickAddModal({
 
   const autoSlug =
     slugOverride.trim() ||
-    generateProjectSlug(titleEn || clientName, clientName);
+    generateProjectSlug(titleEn, clientName) ||
+    `project-${Date.now().toString(36)}`;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -118,10 +120,11 @@ export function QuickAddModal({
         title: titleAr.trim(),
         ...(summaryAr.trim() ? { summary: summaryAr.trim() } : {}),
       },
-      ...(titleEn.trim()
+      ...(titleEn.trim() || summaryEn.trim()
         ? {
             en: {
-              title: titleEn.trim(),
+              title: titleEn.trim() || titleAr.trim(),
+              ...(summaryEn.trim() ? { summary: summaryEn.trim() } : {}),
             },
           }
         : {}),
@@ -173,6 +176,7 @@ export function QuickAddModal({
       coverUrl,
       titleEn,
       summaryAr,
+      summaryEn,
       slug: autoSlug,
       status: publishImmediately ? "published" : "draft",
     });
@@ -323,8 +327,8 @@ export function QuickAddModal({
                       <textarea
                         rows={2}
                         placeholder="Brief summary..."
-                        value={summaryAr}
-                        onChange={(e) => setSummaryAr(e.target.value)}
+                        value={summaryEn}
+                        onChange={(e) => setSummaryEn(e.target.value)}
                       />
                     </label>
                   </div>

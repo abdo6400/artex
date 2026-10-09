@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import Image from "next/image";
 import { useCopy } from "@/features/dashboard/i18n/copy";
 import { useToast } from "@/features/dashboard/shell/toast";
@@ -81,6 +81,7 @@ function DrawerInner({
   const [version, setVersion] = useState<number | null>(null);
 
   // Initial values initialized cleanly
+  const slugEditedRef = useRef(Boolean(initialValues?.slug));
   const [slug, setSlug] = useState(
     initialValues?.slug ||
       generateProjectSlug(initialValues?.titleEn, initialValues?.clientName) ||
@@ -217,7 +218,9 @@ function DrawerInner({
 
     setSaving(true);
     const finalSlug =
-      slug.trim() || generateProjectSlug(titleEn || clientName, clientName);
+      slug.trim() ||
+      generateProjectSlug(titleEn, clientName) ||
+      `project-${Date.now().toString(36)}`;
 
     const body = {
       slug: finalSlug,
@@ -373,7 +376,14 @@ function DrawerInner({
                     <input
                       required
                       value={clientName}
-                      onChange={(e) => setClientName(e.target.value)}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setClientName(val);
+                        if (!projectId && !slugEditedRef.current) {
+                          const auto = generateProjectSlug(titleEn, val);
+                          if (auto) setSlug(auto);
+                        }
+                      }}
                       placeholder="Siemens, Dell, ..."
                     />
                   </label>
@@ -496,7 +506,14 @@ function DrawerInner({
                   <span>{copy.quick.titleEn}</span>
                   <input
                     value={titleEn}
-                    onChange={(e) => setTitleEn(e.target.value)}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setTitleEn(val);
+                      if (!projectId && !slugEditedRef.current) {
+                        const auto = generateProjectSlug(val, clientName);
+                        if (auto) setSlug(auto);
+                      }
+                    }}
                     placeholder="Project title in English"
                   />
                 </label>
@@ -619,7 +636,10 @@ function DrawerInner({
                     dir="ltr"
                     disabled={Boolean(projectId)}
                     value={slug}
-                    onChange={(e) => setSlug(e.target.value)}
+                    onChange={(e) => {
+                      slugEditedRef.current = true;
+                      setSlug(e.target.value);
+                    }}
                     placeholder="cairo-expo-2026"
                   />
                   {projectId && (

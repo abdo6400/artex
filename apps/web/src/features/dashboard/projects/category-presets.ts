@@ -38,7 +38,8 @@ export const CATEGORY_PRESETS: CategoryPreset[] = [
  * If it's purely non-Latin (e.g. Arabic), uses client or fallback with timestamp.
  */
 export function generateProjectSlug(titleEn?: string, client?: string): string {
-  const source = titleEn || client || "";
+  const parts = [client, titleEn].filter(Boolean).join(" ");
+  const source = parts || titleEn || client || "";
   const cleaned = source
     .toLowerCase()
     .trim()
@@ -50,5 +51,5 @@ export function generateProjectSlug(titleEn?: string, client?: string): string {
     return cleaned;
   }
 
-  return `project-${Date.now().toString(36)}`;
+  return "";
 }
