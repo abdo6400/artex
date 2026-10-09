@@ -1,0 +1,7 @@
+.next
+coverage
+dist
+node_modules
+pnpm-lock.yaml
+CLAUDE.md
+packages/database/drizzle/meta

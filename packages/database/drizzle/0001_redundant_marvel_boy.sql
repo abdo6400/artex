@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX "project_media_single_cover_unique" ON "project_media" USING btree ("project_id") WHERE "project_media"."role" = 'cover';

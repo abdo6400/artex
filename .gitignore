@@ -1,8 +1,15 @@
 node_modules/
 dist/
 build/
+.next/
+coverage/
+.turbo/
+.vercel/
+.pnpm-store/
 .cache/
+.local-media/
 .env*
+!.env.example
 .vite/
 vite.config.*.timestamp-*
 *.tsbuildinfo

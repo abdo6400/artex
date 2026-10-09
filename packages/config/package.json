@@ -1,0 +1,16 @@
+{
+  "name": "@artex/config",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./security": "./src/security.ts",
+    "./typescript/base": "./typescript/base.json"
+  },
+  "scripts": {
+    "build": "tsc --noEmit",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "node -e \"console.log('No config tests')\""
+  }
+}

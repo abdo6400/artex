@@ -1,0 +1,86 @@
+name: artex
+
+services:
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: artex
+      POSTGRES_USER: artex
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set a long random hex database password}
+    volumes: ["postgres-data:/var/lib/postgresql"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U artex -d artex"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  operations:
+    profiles: ["tools"]
+    build:
+      context: ../..
+      dockerfile: infrastructure/docker/Dockerfile
+      target: builder
+    environment:
+      DATABASE_URL: postgresql://artex:${POSTGRES_PASSWORD:?Set database password}@postgres:5432/artex
+      OWNER_EMAIL: ${OWNER_EMAIL:-}
+      OWNER_NAME: ${OWNER_NAME:-Artex Owner}
+      OWNER_PASSWORD: ${OWNER_PASSWORD:-}
+      RECOVERY_EMAIL: ${RECOVERY_EMAIL:-}
+      RECOVERY_PASSWORD: ${RECOVERY_PASSWORD:-}
+    command: ["pnpm", "db:migrate"]
+    depends_on:
+      postgres: { condition: service_healthy }
+
+  platform:
+    build:
+      context: ../..
+      dockerfile: infrastructure/docker/Dockerfile
+      args:
+        NEXT_PUBLIC_SITE_URL: https://${WEB_HOST:?Set public hostname}
+        NEXT_PUBLIC_API_URL: https://${WEB_HOST:?Set public hostname}
+    environment:
+      DATABASE_URL: postgresql://artex:${POSTGRES_PASSWORD:?Set database password}@postgres:5432/artex
+      RATE_LIMIT_SALT: ${RATE_LIMIT_SALT:?Set a long random salt}
+      MFA_ENCRYPTION_KEY: ${MFA_ENCRYPTION_KEY:?Set a 64-character random hex key}
+      REQUIRE_OWNER_MFA: "true"
+      MEDIA_STORAGE_DRIVER: filesystem
+      MEDIA_STORAGE_PATH: /var/lib/artex/media
+      MEDIA_PUBLIC_BASE_URL: https://${WEB_HOST:?Set public hostname}/api/v1/public/media
+      API_INTERNAL_URL: http://platform:3000
+      WEB_ORIGIN: https://${WEB_HOST:?Set public hostname}
+      DASHBOARD_ORIGIN: https://${WEB_HOST:?Set public hostname}
+    volumes: ["media-data:/var/lib/artex/media"]
+    depends_on:
+      postgres: { condition: service_healthy }
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/api/v1/ready').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 15s
+      retries: 3
+
+  caddy:
+    image: caddy:2-alpine
+    ports: ["80:80", "443:443", "443:443/udp"]
+    environment:
+      WEB_HOST: ${WEB_HOST:?Set public hostname}
+      TLS_CONTACT_EMAIL: ${TLS_CONTACT_EMAIL:?Set certificate contact email}
+    volumes:
+      - ../proxy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on: [platform]
+    restart: unless-stopped
+
+volumes:
+  media-data:
+  postgres-data:
+  caddy-data:
+  caddy-config:

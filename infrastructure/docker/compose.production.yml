@@ -1,0 +1,36 @@
+services:
+  platform:
+    build:
+      context: ../..
+      dockerfile: infrastructure/docker/Dockerfile
+      args:
+        NEXT_PUBLIC_SITE_URL: ${WEB_ORIGIN:?Set the public HTTPS origin}
+        NEXT_PUBLIC_API_URL: ${WEB_ORIGIN:?Set the public HTTPS origin}
+    environment:
+      DATABASE_URL: ${DATABASE_URL:?Set a production PostgreSQL URL}
+      RATE_LIMIT_SALT: ${RATE_LIMIT_SALT:?Set a random salt of at least 32 characters}
+      MFA_ENCRYPTION_KEY: ${MFA_ENCRYPTION_KEY:?Set a 64-character random hex key}
+      REQUIRE_OWNER_MFA: "true"
+      MEDIA_STORAGE_DRIVER: filesystem
+      MEDIA_STORAGE_PATH: /var/lib/artex/media
+      MEDIA_PUBLIC_BASE_URL: ${WEB_ORIGIN:?Set the public HTTPS origin}/api/v1/public/media
+      API_INTERNAL_URL: http://platform:3000
+      WEB_ORIGIN: ${WEB_ORIGIN:?Set the public HTTPS origin}
+      DASHBOARD_ORIGIN: ${WEB_ORIGIN:?Set the public HTTPS origin}
+    volumes: ["media-data:/var/lib/artex/media"]
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/api/v1/ready').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 15s
+      retries: 3
+    ports: ["127.0.0.1:3000:3000"]
+
+volumes:
+  media-data:

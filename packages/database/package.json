@@ -1,0 +1,31 @@
+{
+  "name": "@artex/database",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schema": "./src/schema/index.ts"
+  },
+  "scripts": {
+    "build": "tsc --noEmit",
+    "db:check": "drizzle-kit check",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:seed-owner": "node scripts/seed-owner.mjs",
+    "db:seed-site": "node scripts/seed-site.mjs",
+    "db:recover-account": "node scripts/recover-account.mjs",
+    "db:studio": "drizzle-kit studio",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "node -e \"console.log('Database integration tests require PostgreSQL')\""
+  },
+  "dependencies": {
+    "drizzle-orm": "0.45.3",
+    "postgres": "3.4.9"
+  },
+  "devDependencies": {
+    "drizzle-kit": "0.31.11",
+    "typescript": "^6.0.3"
+  }
+}

@@ -1,0 +1,38 @@
+name: Database deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      seed_site:
+        description: Seed initial bilingual site content when the database is empty
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-database
+  cancel-in-progress: false
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.19.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:check
+      - run: pnpm db:migrate
+      - if: ${{ inputs.seed_site }}
+        run: pnpm db:seed-site
