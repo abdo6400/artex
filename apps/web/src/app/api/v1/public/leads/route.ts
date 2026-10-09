@@ -77,6 +77,7 @@ export async function POST(request: NextRequest) {
       .values({
         name: parsed.data.name,
         email: parsed.data.email,
+        phone: parsed.data.phone || null,
         consentAt: new Date(),
         company: parsed.data.company,
         service: parsed.data.service,
@@ -93,6 +94,7 @@ export async function POST(request: NextRequest) {
         .select({
           id: leads.id,
           email: leads.email,
+          phone: leads.phone,
           name: leads.name,
           message: leads.message,
           company: leads.company,
@@ -106,6 +108,7 @@ export async function POST(request: NextRequest) {
       if (
         !existing ||
         existing.email !== parsed.data.email ||
+        existing.phone !== (parsed.data.phone || null) ||
         existing.name !== parsed.data.name ||
         existing.message !== parsed.data.message ||
         existing.company !== (parsed.data.company ?? null) ||

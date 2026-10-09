@@ -9,6 +9,7 @@ export type LeadItem = {
   id: string;
   name: string;
   email: string | null;
+  phone?: string | null;
   company: string;
   service: string;
   budget: string;
@@ -38,6 +39,7 @@ export function LeadsView({ leads, onRefresh }: LeadsViewProps) {
       return (
         lead.name.toLowerCase().includes(q) ||
         (lead.email && lead.email.toLowerCase().includes(q)) ||
+        (lead.phone && lead.phone.toLowerCase().includes(q)) ||
         lead.company.toLowerCase().includes(q) ||
         lead.service.toLowerCase().includes(q) ||
         lead.message.toLowerCase().includes(q)
@@ -140,15 +142,34 @@ export function LeadsView({ leads, onRefresh }: LeadsViewProps) {
                 )}
 
                 <div className="lead-contact-info">
-                  {lead.email && (
-                    <a
-                      href={`mailto:${lead.email}`}
-                      className="lead-email-link"
-                    >
-                      <Icon name="mail" size={13} />
-                      <span>{lead.email}</span>
-                    </a>
-                  )}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 12,
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    {lead.email && (
+                      <a
+                        href={`mailto:${lead.email}`}
+                        className="lead-email-link"
+                      >
+                        <Icon name="mail" size={13} />
+                        <span>{lead.email}</span>
+                      </a>
+                    )}
+                    {lead.phone && (
+                      <a
+                        href={`tel:${lead.phone}`}
+                        className="lead-email-link"
+                        style={{ color: "var(--gold)" }}
+                      >
+                        <Icon name="phone" size={13} />
+                        <span dir="ltr">{lead.phone}</span>
+                      </a>
+                    )}
+                  </div>
                   <time className="lead-time">
                     {new Date(lead.createdAt).toLocaleDateString()}
                   </time>
@@ -159,6 +180,19 @@ export function LeadsView({ leads, onRefresh }: LeadsViewProps) {
                     <a href={`mailto:${lead.email}`} className="btn-ghost">
                       <Icon name="mail" size={13} />
                       <span>{copy.leads.reply}</span>
+                    </a>
+                  )}
+
+                  {lead.phone && (
+                    <a
+                      href={`https://wa.me/${lead.phone.replace(/[^0-9]/g, "")}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="btn-ghost"
+                      style={{ color: "var(--gold)" }}
+                    >
+                      <Icon name="phone" size={13} />
+                      <span>WhatsApp</span>
                     </a>
                   )}
 

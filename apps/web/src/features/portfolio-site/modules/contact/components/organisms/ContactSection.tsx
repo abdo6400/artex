@@ -21,6 +21,8 @@ interface FieldProps {
   >;
   type?: string;
   placeholder?: string;
+  required?: boolean;
+  dir?: string;
 }
 
 const FormField: React.FC<FieldProps> = ({
@@ -30,6 +32,8 @@ const FormField: React.FC<FieldProps> = ({
   onChange,
   type = "text",
   placeholder = "",
+  required,
+  dir,
 }) => (
   <div>
     <label
@@ -47,15 +51,27 @@ const FormField: React.FC<FieldProps> = ({
     </label>
     <input
       id={`contact-${name}`}
-      required={name === "name"}
+      required={required ?? (name === "name" || name === "email")}
       minLength={name === "name" ? 2 : undefined}
-      maxLength={name === "name" ? 160 : 200}
+      maxLength={
+        name === "name"
+          ? 160
+          : name === "email"
+            ? 320
+            : name === "phone"
+              ? 40
+              : 200
+      }
       type={type}
       name={name}
       value={value}
       onChange={onChange}
       placeholder={placeholder}
       className="form-input"
+      autoComplete={
+        name === "email" ? "email" : name === "phone" ? "tel" : undefined
+      }
+      dir={dir}
     />
   </div>
 );
@@ -424,30 +440,37 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ lang }) => {
                   />
                 </div>
 
-                <label
-                  htmlFor="contact-email"
+                <div
                   style={{
-                    display: "block",
-                    fontSize: "0.72rem",
-                    color: "#475569",
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase",
-                    marginBottom: -14,
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: 16,
                   }}
                 >
-                  {lang === "ar" ? "البريد الإلكتروني" : "Email"}
-                </label>
-                <input
-                  id="contact-email"
-                  className="form-input"
-                  name="email"
-                  type="email"
-                  required
-                  maxLength={320}
-                  value={formData.email}
-                  onChange={handleChange}
-                  autoComplete="email"
-                />
+                  <FormField
+                    label={copy.contact.fields.email}
+                    name="email"
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder={
+                      lang === "ar" ? "name@example.com" : "name@example.com"
+                    }
+                  />
+                  <FormField
+                    label={copy.contact.fields.phone}
+                    name="phone"
+                    type="tel"
+                    required={false}
+                    dir="ltr"
+                    value={formData.phone ?? ""}
+                    onChange={handleChange}
+                    placeholder={
+                      lang === "ar" ? "010 1234 5678" : "+20 10 1234 5678"
+                    }
+                  />
+                </div>
                 <label
                   style={{
                     display: "flex",

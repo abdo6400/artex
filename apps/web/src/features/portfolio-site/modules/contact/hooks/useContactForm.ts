@@ -4,6 +4,7 @@ import { ContactFormData } from "../types";
 const initialFormData: ContactFormData = {
   name: "",
   email: "",
+  phone: "",
   company: "",
   service: "",
   budget: "",

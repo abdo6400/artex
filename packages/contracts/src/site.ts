@@ -220,6 +220,8 @@ export const siteCopySchema = z.object({
     fields: z.object({
       name: text,
       company: text,
+      email: text.default("Email"),
+      phone: text.default("Phone Number (Optional)"),
       service: text,
       serviceOptions: z.array(text).min(1).max(50),
       budget: text,

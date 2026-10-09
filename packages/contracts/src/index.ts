@@ -69,6 +69,13 @@ export const healthResponseSchema = z.object({
 export const createLeadSchema = z.object({
   name: z.string().trim().min(2).max(160),
   email: z.email().trim().toLowerCase().max(320),
+  phone: z
+    .string()
+    .trim()
+    .max(40)
+    .nullish()
+    .transform((val) => val?.trim() ?? "")
+    .default(""),
   consent: z.literal(true),
   company: z.string().trim().max(200).default(""),
   service: z.string().trim().max(160).default(""),
@@ -82,6 +89,7 @@ export const leadSchema = createLeadSchema
   .omit({ website: true, consent: true })
   .extend({
     email: z.email().nullable(),
+    phone: z.string().nullable().optional(),
     id: uuidSchema,
     status: z.enum(["new", "contacted", "closed", "spam"]),
     createdAt: z.iso.datetime(),

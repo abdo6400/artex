@@ -196,6 +196,7 @@ export const leads = pgTable(
     id: uuid("id").defaultRandom().primaryKey(),
     name: varchar("name", { length: 160 }).notNull(),
     email: varchar("email", { length: 320 }),
+    phone: varchar("phone", { length: 40 }),
     consentAt: timestamp("consent_at", { withTimezone: true }),
     company: varchar("company", { length: 200 }).default("").notNull(),
     service: varchar("service", { length: 160 }).default("").notNull(),

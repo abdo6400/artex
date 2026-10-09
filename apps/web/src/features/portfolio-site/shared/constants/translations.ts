@@ -137,6 +137,8 @@ export const t = {
       fields: {
         name: "Full Name",
         company: "Company Name",
+        email: "Email",
+        phone: "Phone Number (Optional)",
         service: "Service Needed",
         serviceOptions: [
           "Select a service...",
@@ -298,6 +300,8 @@ export const t = {
       fields: {
         name: "الاسم الكامل",
         company: "اسم الشركة",
+        email: "البريد الإلكتروني",
+        phone: "رقم الهاتف (اختياري)",
         service: "الخدمة المطلوبة",
         serviceOptions: [
           "اختر الخدمة...",
