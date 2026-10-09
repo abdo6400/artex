@@ -14,7 +14,7 @@ import {
   siteUrl,
 } from "@/lib/seo";
 
-export const revalidate = 300;
+export const revalidate = 60;
 
 export async function generateMetadata({
   params,
@@ -68,7 +68,7 @@ async function getPortfolio(locale: "ar" | "en") {
   try {
     const response = await fetch(
       `${base}/api/v1/public/projects?locale=${locale}&limit=50`,
-      { next: { revalidate: 300 } },
+      { next: { revalidate: 60, tags: ["projects"] } },
     );
     if (!response.ok) return undefined;
     const payload = publicProjectListResponseSchema.parse(
@@ -107,7 +107,7 @@ export default async function HomePage({
   await connection();
   const base = process.env.API_INTERNAL_URL ?? "http://localhost:3000";
   const siteResponse = await fetch(`${base}/api/v1/public/site`, {
-    next: { revalidate: 300 },
+    next: { revalidate: 60, tags: ["site"] },
   }).catch(() => null);
   const site = siteResponse?.ok
     ? siteContentResponseSchema.safeParse(await siteResponse.json())

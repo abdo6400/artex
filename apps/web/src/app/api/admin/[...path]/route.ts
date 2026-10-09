@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
 import { SESSION_COOKIE } from "@/features/dashboard/lib/auth";
+import { revalidatePublicContent } from "@/lib/revalidate";
 
 type Context = { params: Promise<{ path: string[] }> };
 
@@ -31,6 +32,12 @@ async function forward(request: NextRequest, context: Context) {
       body: request.method === "GET" ? undefined : await request.arrayBuffer(),
       cache: "no-store",
     });
+    if (response.ok && request.method !== "GET") {
+      const segment = path[0];
+      if (segment === "projects" || segment === "site" || segment === "media") {
+        revalidatePublicContent(segment === "site" ? "site" : "projects");
+      }
+    }
     return new NextResponse(
       response.status === 204 ? null : await response.arrayBuffer(),
       {

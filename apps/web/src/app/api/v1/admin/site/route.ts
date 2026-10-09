@@ -7,6 +7,7 @@ import {
 } from "@/server/modules/site/application/site-content";
 import { authenticateAdminRequest } from "@/server/shared/http/admin-auth";
 import { problemResponse } from "@/server/shared/http/problem-response";
+import { revalidatePublicContent } from "@/lib/revalidate";
 
 export async function GET(request: NextRequest) {
   const session = await authenticateAdminRequest(request, "content:read");
@@ -50,6 +51,9 @@ export async function PUT(request: NextRequest) {
       input.data,
       session.user.id,
     );
+    if (result) {
+      revalidatePublicContent("site");
+    }
     return result
       ? NextResponse.json({ data: result })
       : problemResponse({

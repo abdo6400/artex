@@ -4,6 +4,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { authenticateAdminRequest } from "@/server/shared/http/admin-auth";
 import { getRequestMetadata } from "@/server/shared/http/request-metadata";
 import { problemResponse } from "@/server/shared/http/problem-response";
+import { revalidatePublicContent } from "@/lib/revalidate";
 import { DrizzleAdminProjectRepository } from "../../infrastructure/drizzle-admin-project-repository";
 import {
   createAdminProject,
@@ -50,17 +51,14 @@ export async function createHandler(request: NextRequest) {
     });
   const connection = createDatabase(process.env.DATABASE_URL!);
   try {
-    return NextResponse.json(
-      {
-        data: await createAdminProject(
-          new DrizzleAdminProjectRepository(connection.db),
-          input.data,
-          session.user,
-          getRequestMetadata(request).ip,
-        ),
-      },
-      { status: 201 },
+    const created = await createAdminProject(
+      new DrizzleAdminProjectRepository(connection.db),
+      input.data,
+      session.user,
+      getRequestMetadata(request).ip,
     );
+    revalidatePublicContent("projects");
+    return NextResponse.json({ data: created }, { status: 201 });
   } catch (error) {
     if (String(error).includes("projects_slug_unique"))
       return problemResponse({

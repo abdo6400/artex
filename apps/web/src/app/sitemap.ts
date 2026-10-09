@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { publicProjectListResponseSchema } from "@artex/contracts";
 import { siteUrl } from "@/lib/seo";
 
-export const revalidate = 300;
+export const revalidate = 60;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const entries: MetadataRoute.Sitemap = ["ar", "en"].map((locale) => ({
@@ -22,7 +22,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         ...(cursor ? { cursor } : {}),
       });
       const response = await fetch(`${api}/api/v1/public/projects?${query}`, {
-        next: { revalidate: 300 },
+        next: { revalidate: 60, tags: ["projects"] },
         signal: AbortSignal.timeout(10_000),
       });
       if (!response.ok) break;

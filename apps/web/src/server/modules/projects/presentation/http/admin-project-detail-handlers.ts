@@ -4,6 +4,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { authenticateAdminRequest } from "@/server/shared/http/admin-auth";
 import { getRequestMetadata } from "@/server/shared/http/request-metadata";
 import { problemResponse } from "@/server/shared/http/problem-response";
+import { revalidatePublicContent } from "@/lib/revalidate";
 import { DrizzleAdminProjectRepository } from "../../infrastructure/drizzle-admin-project-repository";
 import {
   getAdminProject,
@@ -54,6 +55,7 @@ async function handle(
         session.user,
         getRequestMetadata(request).ip,
       );
+      if (found) revalidatePublicContent("projects");
       return found
         ? new NextResponse(null, { status: 204 })
         : problemResponse({
@@ -78,6 +80,7 @@ async function handle(
       session.user,
       getRequestMetadata(request).ip,
     );
+    if (data) revalidatePublicContent("projects");
     return data
       ? NextResponse.json({ data })
       : problemResponse({
