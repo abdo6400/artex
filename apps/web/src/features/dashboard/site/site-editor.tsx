@@ -12,6 +12,8 @@ import {
   adminSiteResponseSchema,
   type SiteContent,
   type SocialLinkType,
+  defaultSiteTheme,
+  type SiteTheme,
 } from "@artex/contracts";
 
 const socialTypeOptions: Array<{
@@ -32,12 +34,130 @@ const socialTypeOptions: Array<{
   { value: "other", label: "Other" },
 ];
 
+const themePresets: Array<{
+  id: string;
+  nameAr: string;
+  nameEn: string;
+  theme: SiteTheme;
+}> = [
+  {
+    id: "signature",
+    nameAr: "الذهبي الكلاسيكي (الافتراضي)",
+    nameEn: "Artex Signature Gold",
+    theme: defaultSiteTheme,
+  },
+  {
+    id: "emerald",
+    nameAr: "الزمرد الفاخر",
+    nameEn: "Emerald Luxury",
+    theme: {
+      primary: "#10b981",
+      brandNavy: "#062e24",
+      background: "#f0fdf4",
+      accent: "#059669",
+      foreground: "#064e3b",
+    },
+  },
+  {
+    id: "sapphire",
+    nameAr: "الياقوت الأزرق",
+    nameEn: "Midnight Sapphire",
+    theme: {
+      primary: "#3b82f6",
+      brandNavy: "#0b132b",
+      background: "#f0f5ff",
+      accent: "#6366f1",
+      foreground: "#1c2541",
+    },
+  },
+  {
+    id: "ruby",
+    nameAr: "العقيق الملكي",
+    nameEn: "Royal Ruby",
+    theme: {
+      primary: "#e11d48",
+      brandNavy: "#1c1917",
+      background: "#fff1f2",
+      accent: "#be123c",
+      foreground: "#292524",
+    },
+  },
+  {
+    id: "amber",
+    nameAr: "العنبر الدافئ",
+    nameEn: "Warm Amber",
+    theme: {
+      primary: "#d97706",
+      brandNavy: "#1c1512",
+      background: "#fdfaf6",
+      accent: "#b45309",
+      foreground: "#261e1b",
+    },
+  },
+  {
+    id: "slate",
+    nameAr: "الرمادي العصري",
+    nameEn: "Modern Slate",
+    theme: {
+      primary: "#0ea5e9",
+      brandNavy: "#0f172a",
+      background: "#f8fafc",
+      accent: "#38bdf8",
+      foreground: "#0f172a",
+    },
+  },
+];
+
+const colorControls: Array<{
+  key: keyof SiteTheme;
+  labelAr: string;
+  labelEn: string;
+  descAr: string;
+  descEn: string;
+}> = [
+  {
+    key: "primary",
+    labelAr: "اللون الرئيسي (Primary)",
+    labelEn: "Primary Color",
+    descAr: "الأزرار الرئيسية، التدرج اللامع للكلمات، والحدود النشطة",
+    descEn: "Buttons, gradient headlines, and active badges",
+  },
+  {
+    key: "brandNavy",
+    labelAr: "اللون الداكن (Brand Dark)",
+    labelEn: "Brand Dark / Navy",
+    descAr: "شريط التنقل (النافبار)، قسم الهيرو، والفوتر",
+    descEn: "Navbar, hero background, and footer",
+  },
+  {
+    key: "background",
+    labelAr: "خلفية الموقع (Background)",
+    labelEn: "Page Background",
+    descAr: "الخلفية الفاتحة العامة لكافة صفحات وأقسام الموقع",
+    descEn: "Main light background for the public pages",
+  },
+  {
+    key: "accent",
+    labelAr: "لون التمييز الثانوي (Accent)",
+    labelEn: "Accent Color",
+    descAr: "الشارات الصغيرة، التوهج الثانوي، وتفاصيل التدرج",
+    descEn: "Pill badges, secondary glow, and accents",
+  },
+  {
+    key: "foreground",
+    labelAr: "لون النصوص (Text / Foreground)",
+    labelEn: "Text & Headings",
+    descAr: "العناوين الرئيسية وكافة نصوص المحتوى",
+    descEn: "Headings, titles, and body content",
+  },
+];
+
 export function SiteEditor({
   activeSection,
 }: {
   activeSection: SiteSectionId;
 }) {
-  const { copy } = useCopy();
+  const { copy, lang } = useCopy();
   const { notify } = useToast();
 
   const [content, setContent] = useState<SiteContent | null>(null);
@@ -2055,6 +2175,439 @@ export function SiteEditor({
                   }))
                 }
               />
+            </div>
+
+            {/* Color Scheme Customizer */}
+            <div
+              style={{
+                marginTop: 32,
+                borderTop: "1px solid var(--border)",
+                paddingTop: 28,
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
+                  flexWrap: "wrap",
+                  gap: 12,
+                  marginBottom: 20,
+                }}
+              >
+                <div>
+                  <h4
+                    style={{
+                      margin: "0 0 6px",
+                      fontSize: "1.08rem",
+                      fontWeight: 700,
+                      color: "var(--text-heading)",
+                    }}
+                  >
+                    {lang === "ar"
+                      ? "ألوان وثيم الموقع بالكامل"
+                      : "Full Site Color Theme"}
+                  </h4>
+                  <p
+                    style={{
+                      margin: 0,
+                      fontSize: "0.85rem",
+                      color: "var(--text-muted)",
+                      maxWidth: 540,
+                    }}
+                  >
+                    {lang === "ar"
+                      ? "تحكم في ألوان الواجهة العامة للموقع. يتم نشر أي تعديل فورياً للموقع المباشر."
+                      : "Customize the public theme colors. Changes take effect instantly upon saving."}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  style={{ fontSize: "0.82rem", padding: "8px 16px" }}
+                  onClick={() =>
+                    updateContent((prev) => ({
+                      ...prev,
+                      settings: {
+                        ...prev.settings,
+                        theme: { ...defaultSiteTheme },
+                      },
+                    }))
+                  }
+                >
+                  {lang === "ar"
+                    ? "استعادة الألوان الافتراضية"
+                    : "Reset to defaults"}
+                </button>
+              </div>
+
+              {/* Presets Row */}
+              <div style={{ marginBottom: 24 }}>
+                <span
+                  style={{
+                    display: "block",
+                    fontSize: "0.82rem",
+                    fontWeight: 600,
+                    color: "var(--text-heading)",
+                    marginBottom: 10,
+                  }}
+                >
+                  {lang === "ar"
+                    ? "نماذج ألوان جاهزة (بنقرة واحدة):"
+                    : "Quick Theme Presets:"}
+                </span>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns:
+                      "repeat(auto-fill, minmax(180px, 1fr))",
+                    gap: 10,
+                  }}
+                >
+                  {themePresets.map((preset) => {
+                    const currentTheme =
+                      content.settings.theme ?? defaultSiteTheme;
+                    const isSelected =
+                      currentTheme.primary === preset.theme.primary &&
+                      currentTheme.brandNavy === preset.theme.brandNavy &&
+                      currentTheme.background === preset.theme.background;
+                    return (
+                      <button
+                        key={preset.id}
+                        type="button"
+                        onClick={() =>
+                          updateContent((prev) => ({
+                            ...prev,
+                            settings: {
+                              ...prev.settings,
+                              theme: { ...preset.theme },
+                            },
+                          }))
+                        }
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "flex-start",
+                          gap: 8,
+                          padding: "10px 12px",
+                          borderRadius: 10,
+                          border: isSelected
+                            ? "2px solid var(--gold, #c9952e)"
+                            : "1px solid var(--border)",
+                          background: isSelected
+                            ? "var(--gold-subtle, rgba(201, 149, 46, 0.08))"
+                            : "var(--card-bg, rgba(255, 255, 255, 0.03))",
+                          cursor: "pointer",
+                          textAlign: "start",
+                          transition: "all 0.2s ease",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: 5,
+                            width: "100%",
+                          }}
+                        >
+                          <span
+                            style={{
+                              width: 14,
+                              height: 14,
+                              borderRadius: "50%",
+                              background: preset.theme.primary,
+                              display: "inline-block",
+                              boxShadow: "0 1px 3px rgba(0,0,0,0.2)",
+                            }}
+                          />
+                          <span
+                            style={{
+                              width: 14,
+                              height: 14,
+                              borderRadius: "50%",
+                              background: preset.theme.brandNavy,
+                              display: "inline-block",
+                              boxShadow: "0 1px 3px rgba(0,0,0,0.2)",
+                            }}
+                          />
+                          <span
+                            style={{
+                              width: 14,
+                              height: 14,
+                              borderRadius: "50%",
+                              background: preset.theme.accent,
+                              display: "inline-block",
+                              boxShadow: "0 1px 3px rgba(0,0,0,0.2)",
+                            }}
+                          />
+                          <span
+                            style={{
+                              width: 14,
+                              height: 14,
+                              borderRadius: "50%",
+                              background: preset.theme.background,
+                              border: "1px solid #ccc",
+                              display: "inline-block",
+                            }}
+                          />
+                        </div>
+                        <span
+                          style={{
+                            fontSize: "0.8rem",
+                            fontWeight: isSelected ? 700 : 500,
+                            color: "var(--text-heading)",
+                          }}
+                        >
+                          {lang === "ar" ? preset.nameAr : preset.nameEn}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Individual Color Inputs */}
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+                  gap: 16,
+                  marginBottom: 28,
+                }}
+              >
+                {colorControls.map((item) => {
+                  const currentTheme =
+                    content.settings.theme ?? defaultSiteTheme;
+                  const colorVal =
+                    currentTheme[item.key] || defaultSiteTheme[item.key];
+                  return (
+                    <div
+                      key={item.key}
+                      style={{
+                        padding: 14,
+                        borderRadius: 12,
+                        border: "1px solid var(--border)",
+                        background: "var(--card-bg, rgba(255, 255, 255, 0.02))",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 8,
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          gap: 8,
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontSize: "0.86rem",
+                            fontWeight: 600,
+                            color: "var(--text-heading)",
+                          }}
+                        >
+                          {lang === "ar" ? item.labelAr : item.labelEn}
+                        </span>
+                        <div
+                          style={{
+                            width: 28,
+                            height: 28,
+                            borderRadius: 8,
+                            background: colorVal,
+                            border: "1px solid rgba(0,0,0,0.15)",
+                            boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+                            flexShrink: 0,
+                          }}
+                        />
+                      </div>
+                      <p
+                        style={{
+                          margin: 0,
+                          fontSize: "0.76rem",
+                          color: "var(--text-muted)",
+                          lineHeight: 1.4,
+                        }}
+                      >
+                        {lang === "ar" ? item.descAr : item.descEn}
+                      </p>
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: 8,
+                          alignItems: "center",
+                          marginTop: 4,
+                        }}
+                      >
+                        <input
+                          type="color"
+                          value={colorVal}
+                          onChange={(e) =>
+                            updateContent((prev) => ({
+                              ...prev,
+                              settings: {
+                                ...prev.settings,
+                                theme: {
+                                  ...(prev.settings.theme ?? defaultSiteTheme),
+                                  [item.key]: e.target.value,
+                                },
+                              },
+                            }))
+                          }
+                          style={{
+                            width: 40,
+                            height: 38,
+                            padding: 0,
+                            border: "1px solid var(--border)",
+                            borderRadius: 8,
+                            cursor: "pointer",
+                            background: "transparent",
+                          }}
+                        />
+                        <input
+                          type="text"
+                          dir="ltr"
+                          value={colorVal}
+                          maxLength={7}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            updateContent((prev) => ({
+                              ...prev,
+                              settings: {
+                                ...prev.settings,
+                                theme: {
+                                  ...(prev.settings.theme ?? defaultSiteTheme),
+                                  [item.key]: val,
+                                },
+                              },
+                            }));
+                          }}
+                          placeholder="#000000"
+                          style={{
+                            flex: 1,
+                            height: 38,
+                            fontFamily: "monospace",
+                            fontSize: "0.85rem",
+                            textTransform: "lowercase",
+                          }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Live Preview Swatch */}
+              <div
+                style={{
+                  borderRadius: 14,
+                  padding: 20,
+                  border: "1px solid var(--border)",
+                  background: (content.settings.theme ?? defaultSiteTheme)
+                    .background,
+                  color: (content.settings.theme ?? defaultSiteTheme)
+                    .foreground,
+                  boxShadow: "0 8px 30px rgba(0,0,0,0.06)",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginBottom: 16,
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: "0.75rem",
+                      fontWeight: 700,
+                      letterSpacing: "0.08em",
+                      textTransform: "uppercase",
+                      opacity: 0.7,
+                    }}
+                  >
+                    {lang === "ar"
+                      ? "معاينة حية لتنسيق الألوان"
+                      : "Live Theme Preview"}
+                  </span>
+                  <span
+                    style={{
+                      display: "inline-block",
+                      padding: "4px 10px",
+                      borderRadius: 20,
+                      fontSize: "0.75rem",
+                      fontWeight: 600,
+                      background: (content.settings.theme ?? defaultSiteTheme)
+                        .accent,
+                      color: "#ffffff",
+                    }}
+                  >
+                    {lang === "ar" ? "شارة فرعية" : "Accent Badge"}
+                  </span>
+                </div>
+                <div
+                  style={{
+                    borderRadius: 10,
+                    padding: "16px 20px",
+                    background: (content.settings.theme ?? defaultSiteTheme)
+                      .brandNavy,
+                    color: "#ffffff",
+                    marginBottom: 16,
+                  }}
+                >
+                  <h4
+                    style={{
+                      margin: "0 0 6px",
+                      fontSize: "1.1rem",
+                      fontWeight: 800,
+                    }}
+                  >
+                    <span
+                      style={{
+                        color: (content.settings.theme ?? defaultSiteTheme)
+                          .primary,
+                      }}
+                    >
+                      {lang === "ar" ? "آرتكس برودكشن " : "Artex Production "}
+                    </span>
+                    {lang === "ar"
+                      ? "تخطّى حدود المساحة"
+                      : "Go Beyond Your Space"}
+                  </h4>
+                  <p style={{ margin: 0, fontSize: "0.82rem", opacity: 0.85 }}>
+                    {lang === "ar"
+                      ? "هكذا تظهر الألوان معاً على شريط التنقل وقسم الواجهة الرئيسية."
+                      : "This is how the colors look together on the dark navigation and hero."}
+                  </p>
+                </div>
+                <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                  <button
+                    type="button"
+                    style={{
+                      border: "none",
+                      borderRadius: 10,
+                      padding: "10px 22px",
+                      fontWeight: 700,
+                      fontSize: "0.85rem",
+                      cursor: "pointer",
+                      background: (content.settings.theme ?? defaultSiteTheme)
+                        .primary,
+                      color: "#12242b",
+                      boxShadow: "0 4px 16px rgba(0,0,0,0.12)",
+                    }}
+                  >
+                    {lang === "ar"
+                      ? "زر رئيسي تجريبي"
+                      : "Sample Primary Button"}
+                  </button>
+                  <span style={{ fontSize: "0.85rem", opacity: 0.8 }}>
+                    {lang === "ar"
+                      ? "نص عادي على خلفية الموقع"
+                      : "Normal body text on background"}
+                  </span>
+                </div>
+              </div>
             </div>
           </section>
         )}

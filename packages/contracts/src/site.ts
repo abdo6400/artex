@@ -57,10 +57,37 @@ const defaultSocialLinks = [
     url: "https://www.facebook.com/share/1Bszbknj15/?mibextid=wwXIfr",
   },
 ];
+export const hexColorSchema = z
+  .string()
+  .trim()
+  .regex(
+    /^#[0-9a-fA-F]{6}$/,
+    "Must be a valid 6-character hex color code (e.g. #c9952e)",
+  );
+
+export const defaultSiteTheme = {
+  primary: "#c9952e",
+  brandNavy: "#091c22",
+  background: "#f7f3ea",
+  accent: "#167b86",
+  foreground: "#192c33",
+};
+
+export const siteThemeSchema = z.object({
+  primary: hexColorSchema.default(defaultSiteTheme.primary),
+  brandNavy: hexColorSchema.default(defaultSiteTheme.brandNavy),
+  background: hexColorSchema.default(defaultSiteTheme.background),
+  accent: hexColorSchema.default(defaultSiteTheme.accent),
+  foreground: hexColorSchema.default(defaultSiteTheme.foreground),
+});
+
+export type SiteTheme = z.infer<typeof siteThemeSchema>;
+
 export const defaultSiteSettings = {
   logoUrl: "/logo.svg",
   heroImageUrl:
     "https://images.unsplash.com/photo-1531058020387-3be344556be6?w=1600&h=900&fit=crop&auto=format",
+  theme: defaultSiteTheme,
   clientNames: [
     "Alienware",
     "Dell",
@@ -98,6 +125,7 @@ export const defaultSiteSettings = {
 export const siteSettingsSchema = z.object({
   logoUrl: imageUrl,
   heroImageUrl: imageUrl,
+  theme: siteThemeSchema.default(defaultSiteTheme),
   clientNames: z.array(text).max(100),
   phones: z
     .array(z.string().regex(/^\+?[0-9 ()-]{7,30}$/))

@@ -39,11 +39,14 @@
   --ring: #c9952e;
   --radius: 18px;
   --shadow-gold:
-    0 8px 40px rgba(212, 168, 75, 0.18), 0 0 0 1px rgba(212, 168, 75, 0.15);
+    0 8px 40px color-mix(in srgb, var(--primary) 18%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--primary) 15%, transparent);
   --glow-gold:
-    0 0 20px rgba(212, 168, 75, 0.5), 0 0 60px rgba(212, 168, 75, 0.15);
+    0 0 20px color-mix(in srgb, var(--primary) 50%, transparent),
+    0 0 60px color-mix(in srgb, var(--primary) 15%, transparent);
   --glow-cyan:
-    0 0 20px rgba(34, 211, 238, 0.5), 0 0 60px rgba(34, 211, 238, 0.1);
+    0 0 20px color-mix(in srgb, var(--accent) 50%, transparent),
+    0 0 60px color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
 * {
@@ -94,9 +97,14 @@ body {
   background: #d4a84b;
 }
 
-/* ── Gold gradient text ── */
+/* ── Gold / Primary gradient text ── */
 .text-gold-gradient {
-  background: linear-gradient(135deg, #d4a84b 0%, #f0d48a 50%, #d4a84b 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    color-mix(in srgb, var(--primary) 65%, white) 50%,
+    var(--primary) 100%
+  );
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -366,13 +374,17 @@ body {
   color: #d4a84b !important;
 }
 .nav-link.active {
-  color: #d4a84b !important;
+  color: var(--primary) !important;
 }
 
 /* ── CTA Buttons ── */
 .btn-primary {
-  background: linear-gradient(135deg, #d4a84b, #e8c166);
-  color: #12242b;
+  background: linear-gradient(
+    135deg,
+    var(--primary),
+    color-mix(in srgb, var(--primary) 75%, white)
+  );
+  color: var(--primary-foreground);
   font-weight: 700;
   transition: all 0.3s ease;
   position: relative;
@@ -383,7 +395,11 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, #e8c166, #d4a84b);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--primary) 75%, white),
+    var(--primary)
+  );
   opacity: 0;
   transition: opacity 0.3s;
 }
@@ -391,7 +407,7 @@ body {
   opacity: 1;
 }
 .btn-primary:hover {
-  box-shadow: 0 8px 30px rgba(212, 168, 75, 0.4);
+  box-shadow: 0 8px 30px color-mix(in srgb, var(--primary) 40%, transparent);
   transform: translateY(-1px);
 }
 
@@ -981,7 +997,12 @@ select.form-input option {
   overflow: visible;
 }
 .hero-modern .text-gold-gradient {
-  background: linear-gradient(120deg, #9e6b13, #d4a84b 56%, #b37a1d);
+  background: linear-gradient(
+    120deg,
+    color-mix(in srgb, var(--primary) 70%, black),
+    var(--primary) 56%,
+    color-mix(in srgb, var(--primary) 80%, black)
+  );
   -webkit-background-clip: text;
   background-clip: text;
 }

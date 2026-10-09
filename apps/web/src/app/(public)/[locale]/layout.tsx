@@ -5,6 +5,8 @@ import { isLocale, locales } from "@artex/i18n";
 import "../../globals.css";
 import { connection } from "next/server";
 import { SITE_DESCRIPTION, SITE_NAME, siteOrigin } from "@/lib/seo";
+import { getPublicSite } from "@/features/projects/project-api";
+import { generateThemeCss } from "@/lib/theme";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteOrigin()),
@@ -51,8 +53,19 @@ export default async function LocaleLayout({
   await connection();
   if (!isLocale(locale)) notFound();
 
+  const site = await getPublicSite();
+  const themeCss = generateThemeCss(site?.settings?.theme);
+
   return (
     <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"}>
+      <head>
+        {themeCss ? (
+          <style
+            id="artex-theme"
+            dangerouslySetInnerHTML={{ __html: themeCss }}
+          />
+        ) : null}
+      </head>
       <body>{children}</body>
     </html>
   );
